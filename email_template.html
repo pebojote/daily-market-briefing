@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Market Briefing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            margin-top: 30px;
+            color: #34495e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Daily Market Briefing for {{ date }}</h1>
+
+    <h2>Market Overview</h2>
+    <p><b>Sentiment:</b> {{ market_overview.sentiment }}</p>
+    <p><b>Indexes:</b></p>
+    <ul>
+        <li>S&P 500: {{ market_overview.indexes.sp500 }}</li>
+        <li>Nasdaq: {{ market_overview.indexes.nasdaq }}</li>
+    </ul>
+    <p><b>News:</b></p>
+    <ul>
+        {% for news_item in market_overview.news %}
+            <li>{{ news_item }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Watchlist</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>RSI</th>
+                <th>MACD</th>
+                <th>Rank</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in watchlist %}
+                <tr>
+                    <td>{{ item.ticker }}</td>
+                    <td>{{ item.rsi }}</td>
+                    <td>{{ item.macd }}</td>
+                    <td>{{ item.rank }}</td>
+                    <td>{{ item.action }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Open Positions</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Entry Price</th>
+                <th>Current Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in open_positions %}
+                <tr>
+                    <td>{{ item.ticker }}</td>
+                    <td>{{ item.entry_price | to_currency }}</td>
+                    <td>{{ item.current_price | to_currency }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Journal</h2>
+    <ul>
+        <li><b>Did Right:</b>
+            <ul>
+                {% for item in journal.did_right %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li><b>Improve:</b>
+            <ul>
+                {% for item in journal.improve %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li><b>Traps:</b>
+            <ul>
+                {% for item in journal.traps %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Opportunities</h2>
+    <ul>
+        {% for opportunity in opportunities %}
+            <li><b>{{ opportunity.ticker }}:</b> {{ opportunity.setup }} | Entry hint: {{ opportunity.entry_hint }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reminders</h2>
+    <ul>
+        {% for reminder in reminders %}
+            <li>{{ reminder }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
